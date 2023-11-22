@@ -42,7 +42,7 @@ public class NotificationConsumer {
     private static final String TELEGRAM_TOPIC_SCHEDULE = "telegram-schedule";
     private static final String EMAIL_TOPIC_SCHEDULE = "send.email.kb.schedule";
 
-    private static final String TELEGRAM_TOPIC = "telegram";
+    private static final String TELEGRAM_TOPIC = "telegram-service-test-1";
     private static final String EMAIL_TOPIC = "kb-email-service";
     private static final String WEB_TOPIC = "web-notification-service";
     private static final Logger LOGGER = LogManager.getLogger(NotificationConsumer.class);
@@ -102,7 +102,8 @@ public class NotificationConsumer {
         System.out.println("Message: " + messages);
         kafkaTemplate.send(messages);
 
-        String subscriptionUrl = "http://client-event-service/api/v1/clients/get-notification";
+//        String subscriptionUrl = "http://client-event-service/api/v1/clients/get-notification";
+        String subscriptionUrl = "http://localhost:8088/api/v1/clients/get-notification";
         WebClient web = webClientConfig.webClientBuilder().baseUrl(subscriptionUrl).build();
 
         ApiResponse<List<Map<String, Object>>> subscriptionDtos = web.get()
@@ -123,7 +124,13 @@ public class NotificationConsumer {
             System.out.println("Type: " + type);
             log.info("Processing notificationType: {}", type);
             if (type.equals("TELEGRAM")) {
-                kafkaTemplate.send(TELEGRAM_TOPIC, notification.key(), transactionHistoryDto);
+                Message<String> messageTelegram = MessageBuilder
+                        .withPayload(notification.value())
+                        .setHeader(KafkaHeaders.TOPIC, TELEGRAM_TOPIC)
+                        .build();
+                System.out.println("Message: " + messageTelegram);
+                kafkaTemplate.send(messageTelegram);
+//                kafkaTemplate.send(notification.key(), transactionHistoryDto.toString());
                 log.info("Sent message to TELEGRAM_TOPIC: {}", notification.value());
 //            } else if (type.equals("EMAIL")) {
 //                kafkaTemplate.send(EMAIL_TOPIC, notification.key(), notification.value());
