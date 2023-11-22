@@ -42,7 +42,7 @@ public class NotificationConsumer {
     private static final String TELEGRAM_TOPIC_SCHEDULE = "telegram-schedule";
     private static final String EMAIL_TOPIC_SCHEDULE = "send.email.kb.schedule";
 
-    private static final String TELEGRAM_TOPIC = "telegram";
+    private static final String TELEGRAM_TOPIC = "telegram-notification";
     private static final String EMAIL_TOPIC = "kb-email-service";
     private static final String WEB_TOPIC = "web-notification-service";
     private static final Logger LOGGER = LogManager.getLogger(NotificationConsumer.class);
@@ -102,7 +102,7 @@ public class NotificationConsumer {
         System.out.println("Message: " + messages);
         kafkaTemplate.send(messages);
 
-        String subscriptionUrl = "http://client-event-service/api/v1/clients/get-notification";
+        String subscriptionUrl = "http://localhost:8088/api/v1/clients/get-notification";
         WebClient web = webClientConfig.webClientBuilder().baseUrl(subscriptionUrl).build();
 
         ApiResponse<List<Map<String, Object>>> subscriptionDtos = web.get()
@@ -164,7 +164,7 @@ public class NotificationConsumer {
 
         if (!scheduleDto.getUserId().equals("null")){
 
-            String subscriptionUrl = "http://client-event-service/api/v1/clients/get-notification";
+            String subscriptionUrl = "http://localhost:8088/api/v1/clients/get-notification";
             WebClient web = webClientConfig.webClientBuilder().baseUrl(subscriptionUrl).build();
 
             ApiResponse<List<Map<String, Object>>> subscriptionDtos = web.get()
