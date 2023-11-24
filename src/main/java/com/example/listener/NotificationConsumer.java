@@ -99,7 +99,7 @@ public class NotificationConsumer {
         kafkaTemplate.send(messages);
 
 //        String subscriptionUrl = "http://client-event-service/api/v1/clients/get-notification";
-        String subscriptionUrl = "http://localhost:8088/api/v1/clients/get-notification";
+        String subscriptionUrl = "https://api-fintrack.kbaenak.tech/fintrack-client-event-service/api/v1/clients/get-notification";
         WebClient web = webClientConfig.webClientBuilder().baseUrl(subscriptionUrl).build();
 
         ApiResponse<List<Map<String, Object>>> subscriptionDtos = web.get()
@@ -107,7 +107,6 @@ public class NotificationConsumer {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ApiResponse<List<Map<String, Object>>>>() {})
                 .block();
-
         assert subscriptionDtos != null;
         List<Map<String, Object>> payload = subscriptionDtos.getPayload();
         List<String> notificationTypes = payload.stream()

@@ -10,14 +10,14 @@ spring:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: 47.236.10.166:30292
     dead_letter_topic: notification-retry
 
 
     topic:
       name: notification
 
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 47.236.10.166:30292
 
   datasource:
     url: jdbc:postgresql://8.219.131.180:8765/fintrack
