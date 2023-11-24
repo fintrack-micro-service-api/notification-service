@@ -66,7 +66,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Object getPublicKey(){
-        return webClient.baseUrl("http://api-gateway-service/api/v1/webpush/publicKey")
+        return webClient.baseUrl("http://localhost:8084/api/v1/webpush/publicKey")
                 .build()
                 .get()
                 .retrieve().bodyToMono(Object.class).block();
