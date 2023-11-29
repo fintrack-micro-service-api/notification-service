@@ -15,7 +15,7 @@ spring:
 
 
     topic:
-      name: notification
+      name: notification-service
 
     bootstrap-servers: 47.236.10.166:30292
 

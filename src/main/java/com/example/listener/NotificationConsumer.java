@@ -35,7 +35,7 @@ public class NotificationConsumer {
 
     private final WebClientConfig webClientConfig;
 
-    private static final String NOTIFICATION_TOPIC = "notification-service";
+    private static final String NOTIFICATION_TOPIC = "notification-alert";
     private static final String NOTIFICATION_TOPIC_SCHEDULE = "notification-service-schedule";
     private static final String WEB_TOPIC_SCHEDULE = "web-service-schedule";
     private static final String TELEGRAM_TOPIC_SCHEDULE = "telegram-schedule";
@@ -90,7 +90,7 @@ public class NotificationConsumer {
         System.out.println("Message: " + message);
         kafkaTemplate.send(message);
 
-        String userId = String.valueOf(transactionHistoryDto.getCustomerId());
+//        String userId = String.valueOf(transactionHistoryDto.getCustomerId());
         Message<TransactionHistoryDto> messages = MessageBuilder
                 .withPayload(transactionHistoryDto)
                 .setHeader(KafkaHeaders.TOPIC, EMAIL_TOPIC)
@@ -98,42 +98,50 @@ public class NotificationConsumer {
         System.out.println("Message: " + messages);
         kafkaTemplate.send(messages);
 
+        Message<String> messageTelegram = MessageBuilder
+                .withPayload(notification.value())
+                .setHeader(KafkaHeaders.TOPIC, TELEGRAM_TOPIC)
+                .build();
+        System.out.println("Message: " + messageTelegram);
+        kafkaTemplate.send(messageTelegram);
+
+
 //        String subscriptionUrl = "http://client-event-service/api/v1/clients/get-notification";
-        String subscriptionUrl = "https://api-fintrack.kbaenak.tech/fintrack-client-event-service/api/v1/clients/get-notification";
-        WebClient web = webClientConfig.webClientBuilder().baseUrl(subscriptionUrl).build();
-
-        ApiResponse<List<Map<String, Object>>> subscriptionDtos = web.get()
-                .uri("/{userId}", userId)
-                .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<ApiResponse<List<Map<String, Object>>>>() {})
-                .block();
-        assert subscriptionDtos != null;
-        List<Map<String, Object>> payload = subscriptionDtos.getPayload();
-        List<String> notificationTypes = payload.stream()
-                .map(subscription -> (String) subscription.get("notificationType"))
-                .toList();
-
-        System.out.println("Notification: " + notificationTypes);
-
-        for (String type : notificationTypes) {
-            System.out.println("Type: " + type);
-            log.info("Processing notificationType: {}", type);
-            if (type.equals("TELEGRAM")) {
-                Message<String> messageTelegram = MessageBuilder
-                        .withPayload(notification.value())
-                        .setHeader(KafkaHeaders.TOPIC, TELEGRAM_TOPIC)
-                        .build();
-                System.out.println("Message: " + messageTelegram);
-                kafkaTemplate.send(messageTelegram);
-//                kafkaTemplate.send(notification.key(), transactionHistoryDto.toString());
-                log.info("Sent message to TELEGRAM_TOPIC: {}", notification.value());
-//            } else if (type.equals("EMAIL")) {
-//                kafkaTemplate.send(EMAIL_TOPIC, notification.key(), notification.value());
-//                log.info("Sent message to EMAIL_TOPIC: {}", notification.value());
-            } else {
-                log.info("this userId doesn't have subscribe telegram or email notification types!");
-            }
-        }
+//        String subscriptionUrl = "https://api-fintrack.kbaenak.tech/fintrack-client-event-service/api/v1/clients/get-notification";
+//        WebClient web = webClientConfig.webClientBuilder().baseUrl(subscriptionUrl).build();
+//
+//        ApiResponse<List<Map<String, Object>>> subscriptionDtos = web.get()
+//                .uri("/{userId}", userId)
+//                .retrieve()
+//                .bodyToMono(new ParameterizedTypeReference<ApiResponse<List<Map<String, Object>>>>() {})
+//                .block();
+//        assert subscriptionDtos != null;
+//        List<Map<String, Object>> payload = subscriptionDtos.getPayload();
+//        List<String> notificationTypes = payload.stream()
+//                .map(subscription -> (String) subscription.get("notificationType"))
+//                .toList();
+//
+//        System.out.println("Notification: " + notificationTypes);
+//
+//        for (String type : notificationTypes) {
+//            System.out.println("Type: " + type);
+//            log.info("Processing notificationType: {}", type);
+//            if (type.equals("TELEGRAM")) {
+//                Message<String> messageTelegram = MessageBuilder
+//                        .withPayload(notification.value())
+//                        .setHeader(KafkaHeaders.TOPIC, TELEGRAM_TOPIC)
+//                        .build();
+//                System.out.println("Message: " + messageTelegram);
+//                kafkaTemplate.send(messageTelegram);
+////                kafkaTemplate.send(notification.key(), transactionHistoryDto.toString());
+//                log.info("Sent message to TELEGRAM_TOPIC: {}", notification.value());
+////            } else if (type.equals("EMAIL")) {
+////                kafkaTemplate.send(EMAIL_TOPIC, notification.key(), notification.value());
+////                log.info("Sent message to EMAIL_TOPIC: {}", notification.value());
+//            } else {
+//                log.info("this userId doesn't have subscribe telegram or email notification types!");
+//            }
+//        }
 
     }
 

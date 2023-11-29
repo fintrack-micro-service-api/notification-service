@@ -72,7 +72,7 @@ public class KafkaConsumerConfig {
                     log.info("Exception {} occurred sending the record to the error topic {}", ex.getMessage(), deadLetterTopic);
                     return new TopicPartition(deadLetterTopic, -1);
                 });
-        CommonErrorHandler errorHandler = new DefaultErrorHandler(deadLetterPublishingRecoverer, new FixedBackOff(3000L, 3L));
+        CommonErrorHandler errorHandler = new DefaultErrorHandler(deadLetterPublishingRecoverer, new FixedBackOff(3000L, 0L));
         concurrentKafkaListenerContainerFactory.setCommonErrorHandler(errorHandler);
         return concurrentKafkaListenerContainerFactory;
     }
