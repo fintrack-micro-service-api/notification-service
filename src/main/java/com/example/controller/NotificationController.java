@@ -35,14 +35,14 @@ public class NotificationController {
             return ResponseEntity.ok("Send Email Successful");
     }
 
-    @GetMapping
-    public Object getPublicKey(){
-        System.out.println("Before");
-        Object data = service.getPublicKey();
-        System.out.println("Data: " + data);
-
-        return data;
-    }
+//    @GetMapping
+//    public Object getPublicKey(){
+//        System.out.println("Before");
+//        Object data = service.getPublicKey();
+//        System.out.println("Data: " + data);
+//
+//        return data;
+//    }
 
 
 //    @PostMapping("/addData")

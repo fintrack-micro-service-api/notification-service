@@ -54,23 +54,23 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
-    @Override
-    public void sendData(String data) {
-        Message<String> message = MessageBuilder
-                .withPayload(data)
-                .setHeader(KafkaHeaders.TOPIC, "web-notification")
-                .build();
-        System.out.println("Message: " + message);
-        kafkaTemplate.send(message);
-    }
+//    @Override
+//    public void sendData(String data) {
+//        Message<String> message = MessageBuilder
+//                .withPayload(data)
+//                .setHeader(KafkaHeaders.TOPIC, "web-notification")
+//                .build();
+//        System.out.println("Message: " + message);
+//        kafkaTemplate.send(message);
+//    }
 
-    @Override
-    public Object getPublicKey(){
-        return webClient.baseUrl("http://localhost:8084/api/v1/webpush/publicKey")
-                .build()
-                .get()
-                .retrieve().bodyToMono(Object.class).block();
-    }
+//    @Override
+//    public Object getPublicKey(){
+//        return webClient.baseUrl("http://localhost:8084/api/v1/webpush/publicKey")
+//                .build()
+//                .get()
+//                .retrieve().bodyToMono(Object.class).block();
+//    }
     @Override
     public void pushToWeb(Object data) {
         Message<Object> message = MessageBuilder
