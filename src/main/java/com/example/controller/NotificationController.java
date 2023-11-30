@@ -19,6 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "/message")
 @AllArgsConstructor
+@CrossOrigin
 //@SecurityRequirement(name = "app")
 public class NotificationController {
     private final NotificationService service;
