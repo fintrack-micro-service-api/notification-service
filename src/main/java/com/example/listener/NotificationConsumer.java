@@ -35,14 +35,14 @@ public class NotificationConsumer {
 
     private final WebClientConfig webClientConfig;
 
-    private static final String NOTIFICATION_TOPIC = "notification-alert";
+    private static final String NOTIFICATION_TOPIC = "notification-alert-service";
     private static final String NOTIFICATION_TOPIC_SCHEDULE = "notification-service-schedule";
     private static final String WEB_TOPIC_SCHEDULE = "web-service-schedule";
     private static final String TELEGRAM_TOPIC_SCHEDULE = "telegram-schedule";
     private static final String EMAIL_TOPIC_SCHEDULE = "kb-email-notification-schedule";
     private static final String TELEGRAM_TOPIC = "telegram-notification";
     private static final String EMAIL_TOPIC = "kb-email-notification";
-    private static final String WEB_TOPIC = "web-notification-service";
+    private static final String WEB_TOPIC = "web-notification-alert";
     private static final Logger LOGGER = LogManager.getLogger(NotificationConsumer.class);
 
 
