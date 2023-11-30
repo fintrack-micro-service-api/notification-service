@@ -26,7 +26,7 @@ public class NotificationController {
     @PostMapping("/notify")
     public ResponseEntity<?> getNews(@RequestBody NotificationRequest notificationRequest) {
         service.publishToMessageBroker(notificationRequest);
-
+        System.out.println("dawdadw");
         return ResponseEntity.ok("Successful");
 
     }
