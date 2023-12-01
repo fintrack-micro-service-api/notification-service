@@ -43,6 +43,10 @@ public class NotificationConsumer {
     private static final String TELEGRAM_TOPIC = "telegram-notification";
     private static final String EMAIL_TOPIC = "kb-email-notification";
     private static final String WEB_TOPIC = "web-notification-alert";
+    private static final String IOS_TOPIC = "ios-notification-alert";
+    private static final String IOS_TOPIC_SCHEDULE = "ios-service-schedule";
+
+
     private static final Logger LOGGER = LogManager.getLogger(NotificationConsumer.class);
 
 
@@ -87,7 +91,7 @@ public class NotificationConsumer {
                 .withPayload(notification.value())
                 .setHeader(KafkaHeaders.TOPIC, WEB_TOPIC)
                 .build();
-        System.out.println("Message: " + message);
+        System.out.println("Web Message: " + message);
         kafkaTemplate.send(message);
 
 //        String userId = String.valueOf(transactionHistoryDto.getCustomerId());
@@ -95,15 +99,23 @@ public class NotificationConsumer {
                 .withPayload(transactionHistoryDto)
                 .setHeader(KafkaHeaders.TOPIC, EMAIL_TOPIC)
                 .build();
-        System.out.println("Message: " + messages);
+        System.out.println("Email Message: " + messages);
         kafkaTemplate.send(messages);
 
         Message<String> messageTelegram = MessageBuilder
                 .withPayload(notification.value())
                 .setHeader(KafkaHeaders.TOPIC, TELEGRAM_TOPIC)
                 .build();
-        System.out.println("Message: " + messageTelegram);
+        System.out.println("Telegram Message: " + messageTelegram);
         kafkaTemplate.send(messageTelegram);
+
+        Message<String> messageIOS = MessageBuilder
+                .withPayload(notification.value())
+                .setHeader(KafkaHeaders.TOPIC, IOS_TOPIC)
+                .build();
+        System.out.println("IOS Message: " + messageIOS);
+        kafkaTemplate.send(messageIOS);
+
 
 
 //        String subscriptionUrl = "http://client-event-service/api/v1/clients/get-notification";
@@ -170,6 +182,13 @@ public class NotificationConsumer {
                 .build();
         System.out.println("Message: " + messagesEmail);
         kafkaTemplateSchedule.send(messagesEmail);
+
+        Message<String> messagesIOS = MessageBuilder
+                .withPayload(commandsRecord.value())
+                .setHeader(KafkaHeaders.TOPIC, IOS_TOPIC_SCHEDULE)
+                .build();
+        System.out.println("Message: " + messagesIOS);
+        kafkaTemplateSchedule.send(messagesIOS);
 
 
         if (!scheduleDto.getUserId().equals("null")){

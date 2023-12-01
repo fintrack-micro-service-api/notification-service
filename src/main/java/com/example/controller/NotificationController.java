@@ -19,13 +19,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "/message")
 @AllArgsConstructor
+@CrossOrigin
 //@SecurityRequirement(name = "app")
 public class NotificationController {
     private final NotificationService service;
     @PostMapping("/notify")
     public ResponseEntity<?> getNews(@RequestBody NotificationRequest notificationRequest) {
         service.publishToMessageBroker(notificationRequest);
-
         return ResponseEntity.ok("Successful");
 
     }
