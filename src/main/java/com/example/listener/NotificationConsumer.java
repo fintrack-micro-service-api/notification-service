@@ -45,6 +45,8 @@ public class NotificationConsumer {
     private static final String WEB_TOPIC = "web-notification-alert";
     private static final String IOS_TOPIC = "ios-notification-alert";
     private static final String IOS_TOPIC_SCHEDULE = "ios-service-schedule";
+    private static final String AOS_TOPIC = "aos-notification-alert";
+    private static final String AOS_TOPIC_SCHEDULE = "aos-service-schedule";
 
 
     private static final Logger LOGGER = LogManager.getLogger(NotificationConsumer.class);
@@ -115,6 +117,13 @@ public class NotificationConsumer {
                 .build();
         System.out.println("IOS Message: " + messageIOS);
         kafkaTemplate.send(messageIOS);
+
+        Message<String> messageAOS = MessageBuilder
+                .withPayload(notification.value())
+                .setHeader(KafkaHeaders.TOPIC, AOS_TOPIC)
+                .build();
+        System.out.println("IOS Message: " + messageAOS);
+        kafkaTemplate.send(messageAOS);
 
 
 
@@ -189,6 +198,13 @@ public class NotificationConsumer {
                 .build();
         System.out.println("Message: " + messagesIOS);
         kafkaTemplateSchedule.send(messagesIOS);
+
+        Message<String> messagesAOS = MessageBuilder
+                .withPayload(commandsRecord.value())
+                .setHeader(KafkaHeaders.TOPIC, AOS_TOPIC_SCHEDULE)
+                .build();
+        System.out.println("Message: " + messagesAOS);
+        kafkaTemplateSchedule.send(messagesAOS);
 
 
         if (!scheduleDto.getUserId().equals("null")){
