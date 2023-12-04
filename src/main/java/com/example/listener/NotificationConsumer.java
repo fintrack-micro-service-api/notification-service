@@ -42,7 +42,7 @@ public class NotificationConsumer {
     private static final String EMAIL_TOPIC_SCHEDULE = "kb-email-notification-schedule";
     private static final String TELEGRAM_TOPIC = "telegram-notification";
     private static final String EMAIL_TOPIC = "kb-email-notification";
-    private static final String WEB_TOPIC = "web-notification-alert";
+    private static final String WEB_TOPIC = "web-alert-service";
     private static final String IOS_TOPIC = "ios-notification-alert";
     private static final String IOS_TOPIC_SCHEDULE = "ios-service-schedule";
     private static final String AOS_TOPIC = "aos-notification-alert";
